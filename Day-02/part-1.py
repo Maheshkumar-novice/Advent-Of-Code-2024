@@ -1,32 +1,23 @@
-with open('input.txt', 'r') as f:
-	reports = [map(int, line.split()) for line in f.readlines()]
+with open("input.txt") as f:
+    reports = [list(map(int, line.split())) for line in f]
 
-	def is_safe(report):
-		desc = False
-		asc = False
-		prev = None
-		for level in report:
-			if not prev:
-				prev = level
-				continue
 
-			if prev < level:
-				asc = True
-				if abs(prev - level) > 3:
-					return False
+def is_safe(report: list) -> bool:
+    desc, asc, prev = False, False, report[0]
 
-			if prev > level:
-				desc = True
-				if abs(prev - level) > 3:
-					return False
+    for idx in range(1, len(report)):
+        level = report[idx]
 
-			if prev == level:
-				return False
-			
-			if asc and desc:
-				return False
-		
-			prev = level
-		return True
+        if prev < level:
+            asc = True
+        elif prev > level:
+            desc = True
 
-	print(sum(is_safe(report) for report in reports))
+        if (prev == level) or abs(prev - level) > 3 or (asc and desc):
+            return False
+
+        prev = level
+    return True
+
+
+print(sum(is_safe(report) for report in reports))

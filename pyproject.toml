@@ -1,0 +1,8 @@
+[tool.ruff]
+line-length = 200
+target-version = "py312"
+fix = true
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = []

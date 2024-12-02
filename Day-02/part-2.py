@@ -1,10 +1,10 @@
-with open('sample.txt', 'r') as f:
-	reports = [map(int, line.split()) for line in f.readlines()]
+with open("input.txt") as f:
+    reports = [list(map(int, line.split())) for line in f]
 
-def _is_safe(report, ignore_idx):
-    desc = False
-    asc = False
-    prev = None
+
+def is_safe(report: list, ignore_idx: int) -> bool:
+    desc, asc, prev = False, False, None
+
     for idx, level in enumerate(report):
         if idx == ignore_idx:
             continue
@@ -15,29 +15,14 @@ def _is_safe(report, ignore_idx):
 
         if prev < level:
             asc = True
-            if abs(prev - level) > 3:
-                return False
-
-        if prev > level:
+        elif prev > level:
             desc = True
-            if abs(prev - level) > 3:
-                return False
 
-        if prev == level:
+        if (prev == level) or abs(prev - level) > 3 or (asc and desc):
             return False
-        
-        if asc and desc:
-            return False
-    
+
         prev = level
     return True
 
-def is_safe(report):
-    report = list(report)
-    for i in range(len(report)):
-        if _is_safe(report, i):
-            return True
-    return False
-    
 
-print(sum(is_safe(report) for report in reports))
+print(sum(any(is_safe(report, i) for i in range(len(report))) for report in reports))
