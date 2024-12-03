@@ -6,12 +6,8 @@ with open("input.txt") as f:
     for match in matches:
         if match[4] == "don't":
             do = False
-            continue
-
-        if match[3] == "do(":
+        elif match[3] == "do(":
             do = True
-            continue
-
-        if do:
+        elif do:
             sum += int(match[1]) * int(match[2])
     print(sum)
