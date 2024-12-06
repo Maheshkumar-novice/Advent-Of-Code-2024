@@ -1,6 +1,7 @@
 import pprint
+
 # PLEASE FIND A GOOD SOLUTION!
-with open("input.txt", "r") as f:
+with open("input.txt") as f:  # noqa: PTH123
     lines = [list(line.strip()) for line in f]
     position_markers = ["^", "v", ">", "<"]
     lines_length = len(lines)
@@ -26,10 +27,10 @@ with open("input.txt", "r") as f:
 
     next_marker = {"^": ">", ">": "v", "v": "<", "<": "^"}
 
-    def is_out_of_bound(i, j):
+    def is_out_of_bound(i: int, j: int) -> bool:  # noqa: D103
         return not (0 <= i < lines_length and 0 <= j < lines_length)
 
-    def get_next_position(i, j, symbol):
+    def get_next_position(i: int, j: int, symbol: str) -> tuple[int, int]:  # noqa: D103
         dx, dy = marker_movements[symbol]
         return i + dx, j + dy
 
@@ -40,32 +41,20 @@ with open("input.txt", "r") as f:
                 continue
             if lines[x][y] == "#":
                 continue
-            # print(x,y)
+
             lines[x][y] = "#"
-            ops = position
-            pm = position_marker
-            obs_count = {}
-            # pprint.pprint((list("".join(line) for line in lines)))
+            original_position = position
+            old_position_marker = position_marker
 
             c = 0
             while True:
                 old_position = position
-                # lines[i][j] = position_marker
                 i, j = get_next_position(position[0], position[1], position_marker)
 
                 if is_out_of_bound(i, j):
-                    # print(i,j)
                     break
 
                 if lines[i][j] == "#":
-                    # obs_count[(i, j)x] = obs_count.get((i, j), 0) + 1
-                    # if obs_count[(i, j)] == 2:
-                    #     print(obs_count)
-                    #     pprint.pprint((list("".join(line) for line in lines)))
-
-                    #     print(i, j)
-                    #     count += 1
-                    #     break
                     position_marker = next_marker[position_marker]
                     i, j = old_position
                 position = (i, j)
@@ -75,9 +64,8 @@ with open("input.txt", "r") as f:
                     count += 1
                     break
 
-            position = ops
-            position_marker = pm
+            position = original_position
+            position_marker = old_position_marker
             lines[x][y] = "."
 
-    # pprint.pprint((list("".join(line) for line in lines)))
-    print(count)
+    print(count)  # noqa: T201
