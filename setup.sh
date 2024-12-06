@@ -21,6 +21,6 @@ cd $dir
 
 touch sample.txt input.txt part-1.py part-2.py
 
-echo -e "with open('sample.txt', 'r') as f:\n\tprint(f.read())" > part-1.py
+echo -e "with open('sample.txt', 'r') as f:\n    print(f.read())" > part-1.py
 
 curl -v -H "Connection: close" -H 'Cookie: session=$AOC_SESSION_COOKIE' https://adventofcode.com/$2/day/$1/input -o input.txt
