@@ -1,7 +1,14 @@
 with open("input.txt") as f:  # noqa: PTH123, INP001, D100
     lines = [list(line.strip()) for line in f]
-    position_markers = ["^", "v", ">", "<"]
     lines_length = len(lines)
+    position_markers = ["^", "v", ">", "<"]
+    marker_movements = {
+        "^": (-1, 0),
+        "v": (1, 0),
+        ">": (0, 1),
+        "<": (0, -1),
+    }
+    next_marker = {"^": ">", ">": "v", "v": "<", "<": "^"}
 
     position_found = False
     for i in range(lines_length):
@@ -15,39 +22,20 @@ with open("input.txt") as f:  # noqa: PTH123, INP001, D100
         if position_found:
             break
 
-    marker_movements = {
-        "^": (-1, 0),
-        "v": (1, 0),
-        ">": (0, 1),
-        "<": (0, -1),
-    }
-
-    next_marker = {"^": ">", ">": "v", "v": "<", "<": "^"}
-
-    def is_out_of_bound(i: int, j: int) -> bool:  # noqa: D103
-        return not (0 <= i < lines_length and 0 <= j < lines_length)
-
-    def get_next_position(i: int, j: int, symbol: str) -> tuple[int, int]:  # noqa: D103
-        dx, dy = marker_movements[symbol]
-        return i + dx, j + dy
-
     visited = set()
     while True:
         visited.add(position)
-        old_position = position
-        lines[i][j] = position_marker
-        i, j = get_next_position(position[0], position[1], position_marker)
 
-        if is_out_of_bound(i, j):
+        dx, dy = marker_movements[position_marker]
+        i, j = position[0] + dx, position[1] + dy
+
+        if not (0 <= i < lines_length and 0 <= j < lines_length):
             break
 
         if lines[i][j] == "#":
             position_marker = next_marker[position_marker]
-            i, j = old_position
+            i, j = position
 
         position = (i, j)
 
-    import pprint
-
-    pprint.pprint(["".join(line) for line in lines])  # noqa: T203
     print(len(visited))  # noqa: T201
