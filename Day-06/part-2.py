@@ -49,7 +49,7 @@ with open("input.txt") as f:  # noqa: PTH123
                 position = (i, j)
 
                 c += 1
-                if c == 7500:
+                if c == 5500:
                     count += 1
                     break
 
