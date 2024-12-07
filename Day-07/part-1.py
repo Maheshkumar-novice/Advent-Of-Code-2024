@@ -1,28 +1,22 @@
-import operator
+import operator  # noqa: INP001, D100
 from itertools import product
 
-with open("input.txt") as f:
-    sum = 0
-    operators = ["+", "*"]
+with open("input.txt") as f:  # noqa: PTH123
+    result = 0
     operator_map = {"+": operator.add, "*": operator.mul}
     for line in f:
         value, operands = line.split(":")
+        value = int(value)
         operands = list(map(int, operands.strip().split()))
-        operators_possibilities = product(operators, repeat=len(operands) - 1)
+        operators_possibilities = product(operator_map.keys(), repeat=len(operands) - 1)
 
         for possibility in operators_possibilities:
             total = 0
-            rs = None
-            for idx, (operand, p) in enumerate(zip(operands[1:], possibility, strict=False)):
-                op = operator_map[p]
-                if not rs:
-                    total = op(operands[idx], operand)
-                    rs = total
-                else:
-                    total = op(rs, operand)
-                    rs = total
+            for idx, (operand, operation) in enumerate(zip(operands[1:], possibility, strict=False)):
+                operator_ = operator_map[operation]
+                total = operator_(operands[idx], operand) if not total else operator_(total, operand)
 
-            if total == int(value):
-                sum += total
+            if total == value:
+                result += total
                 break
-    print(sum)
+    print(result)  # noqa: T201

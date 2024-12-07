@@ -1,30 +1,25 @@
-import operator
+import operator  # noqa: INP001, D100
 from itertools import product
 
-with open("input.txt") as f:
-    sum = 0
-
-    operators = ["+", "*", "||"]
-
+with open("input.txt") as f:  # noqa: PTH123
+    result = 0
     operator_map = {"+": operator.add, "*": operator.mul, "||": operator.concat}
     for line in f:
         value, operands = line.split(":")
+        value = int(value)
         operands = list(map(int, operands.strip().split()))
-        operators_possibilities = product(operators, repeat=len(operands) - 1)
+        operators_possibilities = product(operator_map.keys(), repeat=len(operands) - 1)
 
         for possibility in operators_possibilities:
             total = 0
-            rs = None
-            for idx, (operand, p) in enumerate(zip(operands[1:], possibility, strict=False)):
-                op = operator_map[p]
-                if not rs:
-                    total = op(int(operands[idx]), int(operand)) if p != "||" else int(op(str(operands[idx]), str(operand)))
-                    rs = total
+            for idx, (operand, operation) in enumerate(zip(operands[1:], possibility, strict=False)):
+                operator_ = operator_map[operation]
+                if not total:
+                    total = operator_(operands[idx], operand) if operation != "||" else int(operator_(str(operands[idx]), str(operand)))
                 else:
-                    total = op(rs, operand) if p != "||" else int(op(str(rs), str(operand)))
-                    rs = total
+                    total = operator_(total, operand) if operation != "||" else int(operator_(str(total), str(operand)))
 
-            if total == int(value):
-                sum += total
+            if total == value:
+                result += total
                 break
-    print(sum)
+    print(result)  # noqa: T201
