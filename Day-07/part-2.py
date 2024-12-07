@@ -32,3 +32,8 @@ if __name__ == "__main__":
             r = [k.result() for k in futures]
 
         print(sum(r))  # noqa: T201
+
+"""
+401477450831495
+python part-2.py  21.36s user 0.29s system 605% cpu 3.579 total
+"""
