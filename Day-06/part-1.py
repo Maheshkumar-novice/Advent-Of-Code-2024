@@ -39,3 +39,25 @@ with open("input.txt") as f:  # noqa: PTH123, INP001, D100
         position = (i, j)
 
     print(len(visited))  # noqa: T201
+
+"""
+4647
+         5429 function calls in 0.004 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.004    0.004 {built-in method builtins.exec}
+        1    0.003    0.003    0.004    0.004 part-1.py:1(<module>)
+     5279    0.000    0.000    0.000    0.000 {method 'add' of 'set' objects}
+        1    0.000    0.000    0.000    0.000 {built-in method _io.open}
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.print}
+      130    0.000    0.000    0.000    0.000 {method 'strip' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        5    0.000    0.000    0.000    0.000 <frozen codecs>:319(decode)
+        1    0.000    0.000    0.000    0.000 {method '__exit__' of '_io._IOBase' objects}
+        5    0.000    0.000    0.000    0.000 {built-in method _codecs.utf_8_decode}
+        1    0.000    0.000    0.000    0.000 <frozen codecs>:309(__init__)
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+        1    0.000    0.000    0.000    0.000 <frozen codecs>:260(__init__)
+"""
