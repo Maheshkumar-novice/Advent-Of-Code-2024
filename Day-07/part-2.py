@@ -46,31 +46,32 @@ if __name__ == "__main__":
 
     s = time.monotonic()
     with open("input.txt") as f:  # noqa: PTH123
-        with ProcessPoolExecutor(max_workers=6) as e:
+        with ProcessPoolExecutor(max_workers=8) as e:
             futures = [e.submit(process, line) for line in f]
-            r = [k.result() for k in futures]
+            result = [k.result() for k in futures]
 
-        print(sum(r))  # noqa: T201
+        print(sum(result))  # noqa: T201
     e = time.monotonic()
     print(" ->", e - s)  # noqa: T201
 
     s = time.monotonic()
-    with open("input.txt") as f:  # noqa: PTH123
-        r = 0
+    with open("input.txt") as f, ProcessPoolExecutor(max_workers=8) as executor:  # noqa: PTH123
+        futures = []
         for line in f:
             value, operands = line.split(":")
             value = int(value)
             operands = list(map(int, operands.strip().split()))
-            r += recurse(operands[0], value, operands[1:])
-        print(r)  # noqa: T201
+            futures.append(executor.submit(recurse, operands[0], value, operands[1:]))
+        result = [k.result() for k in futures]
+        print(sum(result))  # noqa: T201
     e = time.monotonic()
     print(" ->", e - s)  # noqa: T201
 
 """
 401477450831495
- -> 8.011180688001332
+ -> 8.094622067001183
 401477450831495
- -> 3.3024124520015903
+ -> 1.0123130440042587
 
 401477450831495
 python part-2.py  21.36s user 0.29s system 605% cpu 3.579 total
