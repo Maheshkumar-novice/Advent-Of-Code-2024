@@ -27,5 +27,4 @@ with open("input.txt") as f:  # noqa: PTH123
                         if abs(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) == 0:
                             grid[i][j] = "#"
                             result += 1
-    print("\n".join(["".join(line) for line in grid]))  # noqa: T201
     print(result)  # noqa: T201

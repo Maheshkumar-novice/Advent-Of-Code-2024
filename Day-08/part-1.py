@@ -25,5 +25,4 @@ with open("input.txt") as f:  # noqa: PTH123
                         if distance in d and distance2 in d:
                             grid[i][j] = "#"
                             result += 1
-    print("\n".join(["".join(line) for line in grid]))  # noqa: T201
     print(result)  # noqa: T201
