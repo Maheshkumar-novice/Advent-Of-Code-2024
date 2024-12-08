@@ -1,27 +1,65 @@
 import operator  # noqa: INP001, D100
 from itertools import product
 
-with open("input.txt") as f:  # noqa: PTH123
-    result = 0
-    operator_map = {"+": operator.add, "*": operator.mul}
-    for line in f:
-        value, operands = line.split(":")
-        value = int(value)
-        operands = list(map(int, operands.strip().split()))
-        operators_possibilities = product(operator_map.keys(), repeat=len(operands) - 1)
 
-        for possibility in operators_possibilities:
-            total = 0
-            for idx, (operand, operation) in enumerate(zip(operands[1:], possibility, strict=False)):
-                operator_ = operator_map[operation]
-                total = operator_(operands[idx], operand) if not total else operator_(total, operand)
+def recurse(total: int, value: int, operands: list[int]) -> int:  # noqa: D103
+    if total == value and not operands:
+        return total
 
-            if total == value:
-                result += total
-                break
-    print(result)  # noqa: T201
+    if total > value or not operands:
+        return 0
+
+    for op in operator_map.values():
+        if recurse(op(total, operands[0]), value, operands[1:]):
+            return value
+    return 0
+
+
+if __name__ == "__main__":
+    import time
+
+    s = time.monotonic()
+    with open("input.txt") as f:  # noqa: PTH123
+        result = 0
+        operator_map = {"+": operator.add, "*": operator.mul}
+        for line in f:
+            value, operands = line.split(":")
+            value = int(value)
+            operands = list(map(int, operands.strip().split()))
+            operators_possibilities = product(operator_map.keys(), repeat=len(operands) - 1)
+
+            for possibility in operators_possibilities:
+                total = 0
+                for idx, (operand, operation) in enumerate(zip(operands[1:], possibility, strict=False)):
+                    operator_ = operator_map[operation]
+                    total = operator_(operands[idx], operand) if not total else operator_(total, operand)
+
+                if total == value:
+                    result += total
+                    break
+        print(result)  # noqa: T201
+
+    e = time.monotonic()
+    print(" ->", e - s)  # noqa: T201
+
+    s = time.monotonic()
+    with open("input.txt") as f:  # noqa: PTH123
+        r = 0
+        for line in f:
+            value, operands = line.split(":")
+            value = int(value)
+            operands = list(map(int, operands.strip().split()))
+            r += recurse(operands[0], value, operands[1:])
+        print(r)  # noqa: T201
+    e = time.monotonic()
+    print(" -> ", e - s)  # noqa: T201
 
 """
+2314935962622
+ -> 0.8633409629983362
+2314935962622
+ -> 0.1165888969990192
+
 2314935962622
          2183052 function calls in 0.709 seconds
 
