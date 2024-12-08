@@ -14,8 +14,6 @@ with open("input.txt") as f:  # noqa: PTH123
     result = 0
     for members in antennae.values():
         for member1, member2 in combinations(members, r=2):
-            distance = dist(member1, member2)
-            distance2 = 2 * distance
             for i in range(len(grid)):
                 for j in range(len(grid)):
                     if grid[i][j] != "#":
