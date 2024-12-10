@@ -1,6 +1,9 @@
 from collections import deque  # noqa: INP001, D100
 from collections.abc import Generator
+from time import monotonic
 from typing import Any
+
+s = monotonic()
 
 with open("input.txt") as f:  # noqa: PTH123
     grid = [list(map(int, line.strip())) for line in f]
@@ -32,4 +35,8 @@ with open("input.txt") as f:  # noqa: PTH123
 
         result += nines
 
-    print(result)  # noqa: T201
+    print(result, "\n", monotonic() - s)  # noqa: T201
+
+"""
+0.006568328997673234
+"""
