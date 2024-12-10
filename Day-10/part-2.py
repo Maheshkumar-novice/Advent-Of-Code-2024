@@ -18,9 +18,7 @@ with open("input.txt") as f:  # noqa: PTH123
 
     result = 0
     for trailhead in trailheads:
-        visited = set()
         q = deque([trailhead])
-        visited.add(trailhead)
         nines = 0
 
         while q:
