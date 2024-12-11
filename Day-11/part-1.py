@@ -1,4 +1,7 @@
-with open("input.txt") as f:  # noqa: D100, INP001, PTH123
+from time import monotonic  # noqa: D100, INP001
+
+s = monotonic()
+with open("input.txt") as f:  # noqa: PTH123
     stones = f.read().split()
 
     def _apply_rule(stone: str):  # noqa: ANN202
@@ -12,4 +15,8 @@ with open("input.txt") as f:  # noqa: D100, INP001, PTH123
 
     for i in range(25):
         stones = [i for stone in stones for i in _apply_rule(stone)]
-    print(f"{len(stones):,}")  # noqa: T201
+    print(f"{len(stones):,}\n{monotonic() - s}")  # noqa: T201
+
+"""
+0.11531575000844896
+"""

@@ -1,5 +1,7 @@
 from functools import cache  # noqa: D100, INP001
+from time import monotonic
 
+s = monotonic()
 with open("input.txt") as f:  # noqa: PTH123
 
     @cache
@@ -15,4 +17,8 @@ with open("input.txt") as f:  # noqa: PTH123
 
         return _apply_rule(str(int(stone) * 2024), blink - 1)
 
-    print(f"{sum(_apply_rule(stone, 75) for stone in f.read().split()):,}")  # noqa: T201
+    print(f"{sum(_apply_rule(stone, 75) for stone in f.read().split()):,}\n{monotonic() - s}")  # noqa: T201
+
+"""
+0.08001491700997576
+"""
