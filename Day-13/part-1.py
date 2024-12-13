@@ -1,36 +1,26 @@
-from time import monotonic  # noqa: D100, INP001
+import re
+from time import monotonic
 
 import numpy as np
 
 st = monotonic()
-with open("input.txt") as f:  # noqa: PTH123
-    all_details = [line.replace("Button", "").replace("Prize:", "").replace("A:", "").replace("B:", "").split() for line in f.read().split("\n\n")]
+with open("input.txt") as f:
+    all_details = [list(map(int, re.findall(r"\d+", line))) for line in f.read().split("\n\n")]
 
+    tokens = 0
     for detail in all_details:
-        for idx, eq in enumerate(detail):
-            detail[idx] = eq.replace("X", "").replace("Y", "").replace("+", "").replace("=", "").replace(",", "")
+        equations = np.array([[detail[0], detail[2]], [detail[1], detail[3]]])
+        constants = np.array(detail[4:])
+        x, y = np.linalg.solve(equations, constants)
+        x, y = round(x, 3), round(y, 3)  # floating precision issue resolution
 
-    r = 0
-    for detail in all_details:
-        eq1 = list(map(int, [detail[0], detail[2]]))
-        eq2 = list(map(int, [detail[1], detail[3]]))
-        const = list(map(int, detail[4:]))
+        #  to make sure our results are ints and not with decimal values and max value
+        if (np.mod(x, 1) == 0) and (np.mod(y, 1) == 0) and 0 < x <= 100 and 0 < y <= 100:
+            tokens += (x * 3) + y
 
-        x = np.array([eq1, eq2])
-        y = np.array(const)
-        s = np.linalg.solve(x, y)
+    print(tokens)
 
-        a, b = s
-        a, b = round(a, 3), round(b, 3)
-
-        if (np.mod(a, 1) == 0) and (np.mod(b, 1) == 0) and 0 < a <= 100 and 0 < b <= 100:
-            r += (a * 3) + (b * 1)
-        else:
-            continue
-
-    print(r)  # noqa: T201
-
-print(monotonic() - st)  # noqa: T201
+print(monotonic() - st)
 
 """
 time: 0.00470458302879706
