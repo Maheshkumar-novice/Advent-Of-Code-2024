@@ -9,6 +9,7 @@ with open("input.txt") as f:
 
     tokens = 0
     for detail in all_details:
+        # solve: x*(const) + y*(const) = const  # noqa: ERA001
         equations = np.array([[detail[0], detail[2]], [detail[1], detail[3]]])
         constants = np.array(detail[4:])
         x, y = np.linalg.solve(equations, constants)
