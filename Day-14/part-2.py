@@ -1,5 +1,6 @@
+import pprint
 import re
-import sys
+from pathlib import Path
 
 with open("input.txt") as f:
     values = [re.findall(r"(-?\d+),(-?\d+)", line) for line in f]
@@ -9,6 +10,7 @@ with open("input.txt") as f:
     time_elapsed = 1
 
     while True:
+        answer_found = False
         answers = set()
         grid = [["." for _ in range(101)] for _ in range(103)]
         for position, velocity in values:
@@ -26,7 +28,12 @@ with open("input.txt") as f:
                         continue
                     flag = False
                 if flag:
-                    print(time_elapsed)
-                    sys.exit()
+                    answer_found = True
+
+        if answer_found:
+            Path("tree.txt").write_text(pprint.pformat(["".join(line) for line in grid]))
+            break
 
         time_elapsed += 1
+
+print(time_elapsed)
