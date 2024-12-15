@@ -1,16 +1,14 @@
 with open("input.txt") as f:
     garden = [list(line.strip()) for line in f]
     directions = {"d": (1, 0), "u": (-1, 0), "r": (0, 1), "l": (0, -1)}
-    x_configs = {"tr": (-1, 1), "tl": (-1, -1), "br": (1, 1), "bl": (1, -1)}
+    diagonal_directions = {"tr": (-1, 1), "tl": (-1, -1), "br": (1, 1), "bl": (1, -1)}
 
     class Plot:  # noqa: D101
         def __init__(self, x: int, y: int) -> None:  # noqa: D107
             self.x = x
             self.y = y
             self.weight = 0
-            self.fences = None
-            self.locked = None
-            self.straight_neighbours = None
+            self.fences = set()
 
         def __str__(self) -> str:  # noqa: D105
             return f"Plot<{garden[self.x][self.y]}, {self.x=}, {self.y=}, {self.weight=}, {sorted(self.fences)!s}>"
@@ -25,17 +23,17 @@ with open("input.txt") as f:
                 yield new_x, new_y
 
     def _get_diagonal_neighbour_plot(x: int, y: int):  # noqa: ANN202
-        for dir, (dx, dy) in x_configs.items():  # noqa: A001
+        for dir, (dx, dy) in diagonal_directions.items():  # noqa: A001
             new_x, new_y = x + dx, y + dy
             if _in_bound(new_x, new_y):
                 yield dir, new_x, new_y
 
-    plots, plot_map = [], {}
+    plot_map = {}
     for i in range(len(garden)):
         for j in range(len(garden)):
             plot = Plot(i, j)
-            plot_dirs = set()
-            ps = set()
+            fences = set()
+            diagonal_connection_directions = set()
 
             for direction, (dx, dy) in directions.items():
                 new_x, new_y = i + dx, j + dy
@@ -43,50 +41,47 @@ with open("input.txt") as f:
                     if garden[new_x][new_y] == garden[i][j]:
                         continue
                     else:
-                        plot_dirs.add(direction)
+                        fences.add(direction)
                 else:
-                    plot_dirs.add(direction)
+                    fences.add(direction)
 
-            if len(plot_dirs) == 3:  # noqa: PLR2004
-                plot.weight = 2
-            elif len(plot_dirs) == 4:  # noqa: PLR2004
+            if len(fences) == 4:  # noqa: PLR2004
                 plot.weight = 4
-            elif len(plot_dirs) == 2:  # noqa: PLR2004
-                if ("u" in plot_dirs and "d" not in plot_dirs) or ("d" in plot_dirs and "u" not in plot_dirs):
+            elif len(fences) == 3:  # noqa: PLR2004
+                plot.weight = 2
+
+                if "u" in fences and "d" in fences and "l" in fences:
+                    diagonal_connection_directions = {"l"}
+                elif "u" in fences and "d" in fences and "r" in fences:
+                    diagonal_connection_directions = {"r"}
+                elif "l" in fences and "r" in fences and "u" in fences:
+                    diagonal_connection_directions = {"u"}
+                elif "l" in fences and "r" in fences and "d" in fences:
+                    diagonal_connection_directions = {"d"}
+            elif len(fences) == 2:  # noqa: PLR2004
+                if ("u" in fences and "d" not in fences) or ("d" in fences and "u" not in fences):
                     plot.weight = 1
 
-                if "u" in plot_dirs and "l" in plot_dirs:
-                    ps = {"l", "u"}
-                elif "u" in plot_dirs and "r" in plot_dirs:
-                    ps = {"r", "u"}
-                elif "d" in plot_dirs and "l" in plot_dirs:
-                    ps = {"l", "d"}
-                elif "d" in plot_dirs and "r" in plot_dirs:
-                    ps = {"r", "d"}
-                elif "u" in plot_dirs and "d" in plot_dirs:
-                    ps = {"l", "r"}
-                elif "l" in plot_dirs and "r" in plot_dirs:
-                    ps = {"u", "d"}
+                if "u" in fences and "l" in fences:
+                    diagonal_connection_directions = {"l", "u"}
+                elif "u" in fences and "r" in fences:
+                    diagonal_connection_directions = {"r", "u"}
+                elif "d" in fences and "l" in fences:
+                    diagonal_connection_directions = {"l", "d"}
+                elif "d" in fences and "r" in fences:
+                    diagonal_connection_directions = {"r", "d"}
+                elif "u" in fences and "d" in fences:
+                    diagonal_connection_directions = {"l", "r"}
+                elif "l" in fences and "r" in fences:
+                    diagonal_connection_directions = {"u", "d"}
+            elif len(fences) == 1:
+                if "u" in fences or "d" in fences:
+                    diagonal_connection_directions = {"l", "r"}
+                elif "l" in fences or "r" in fences:
+                    diagonal_connection_directions = {"u", "d"}
 
-            if len(plot_dirs) == 1:
-                if "u" in plot_dirs or "d" in plot_dirs:
-                    ps = {"l", "r"}
-                elif "l" in plot_dirs or "r" in plot_dirs:
-                    ps = {"u", "d"}
-
-            if len(plot_dirs) == 3:  # noqa: PLR2004
-                if "u" in plot_dirs and "d" in plot_dirs and "l" in plot_dirs:
-                    ps = {"l"}
-                elif "u" in plot_dirs and "d" in plot_dirs and "r" in plot_dirs:
-                    ps = {"r"}
-                elif "l" in plot_dirs and "r" in plot_dirs and "u" in plot_dirs:
-                    ps = {"u"}
-                elif "l" in plot_dirs and "r" in plot_dirs and "d" in plot_dirs:
-                    ps = {"d"}
-
-            plot.ps = ps
-            plot.fences = plot_dirs
-            plots.append(plot)
+            plot.diagonal_connection_directions = diagonal_connection_directions
+            plot.fences = fences
             plot_map[(i, j)] = plot
 
     r = 0
@@ -108,51 +103,53 @@ with open("input.txt") as f:
                         q.add((new_x, new_y))
 
             a = 0
-            bs = set()
-            for x, y in sorted(visited):
+            visited_diagonal_matches = set()
+            for x, y in visited:
                 global_visited.add((x, y))
                 plot = plot_map[(x, y)]
+
                 if len(plot.fences) < 4:  # noqa: PLR2004
                     for dir, dx, dy in _get_diagonal_neighbour_plot(plot.x, plot.y):  # noqa: A001
                         if garden[dx][dy] == garden[plot.x][plot.y] and (dx, dy) in visited:
-                            t = plot_map[(dx, dy)]
+                            target = plot_map[(dx, dy)]
+                            diagonal_match = plot.diagonal_connection_directions.intersection(target.fences)
 
                             if len(plot.fences) != 3:  # noqa: PLR2004
-                                if (plot.x, plot.y, dx, dy) in bs:
+                                if (plot.x, plot.y, dx, dy) in visited_diagonal_matches:
                                     continue
                                 elif "d" in plot.fences and dir in ["bl", "br"]:
-                                    if plot.ps.intersection(t.fences) and dir == "bl" and "r" in plot.ps.intersection(t.fences):
+                                    if diagonal_match and dir == "bl" and "r" in diagonal_match:
                                         plot.weight += 1
-                                    if plot.ps.intersection(t.fences) and dir == "br" and "l" in plot.ps.intersection(t.fences):
+                                    if diagonal_match and dir == "br" and "l" in diagonal_match:
                                         plot.weight += 1
                                 elif "u" in plot.fences and dir in ["tl", "tr"]:
-                                    if plot.ps.intersection(t.fences) and dir == "tl" and "r" in plot.ps.intersection(t.fences):
+                                    if diagonal_match and dir == "tl" and "r" in diagonal_match:
                                         plot.weight += 1
-                                    if plot.ps.intersection(t.fences) and dir == "tr" and "l" in plot.ps.intersection(t.fences):
+                                    if diagonal_match and dir == "tr" and "l" in diagonal_match:
                                         plot.weight += 1
                                 elif "l" in plot.fences and dir in ["tl", "bl"]:
-                                    if plot.ps.intersection(t.fences) and dir == "tl" and "d" in plot.ps.intersection(t.fences):
+                                    if diagonal_match and dir == "tl" and "d" in diagonal_match:
                                         plot.weight += 1
-                                    if plot.ps.intersection(t.fences) and dir == "bl" and "u" in plot.ps.intersection(t.fences):
+                                    if diagonal_match and dir == "bl" and "u" in diagonal_match:
                                         plot.weight += 1
                                 elif "r" in plot.fences and dir in ["tr", "br"]:
-                                    if plot.ps.intersection(t.fences) and dir == "tr" and "d" in plot.ps.intersection(t.fences):
+                                    if diagonal_match and dir == "tr" and "d" in diagonal_match:
                                         plot.weight += 1
-                                    if plot.ps.intersection(t.fences) and dir == "br" and "u" in plot.ps.intersection(t.fences):
+                                    if diagonal_match and dir == "br" and "u" in diagonal_match:
                                         plot.weight += 1
 
-                                bs.add((dx, dy, plot.x, plot.y))
+                                visited_diagonal_matches.add((dx, dy, plot.x, plot.y))
                             else:
-                                if (plot.x, plot.y, dx, dy) in bs:
+                                if (plot.x, plot.y, dx, dy) in visited_diagonal_matches:
                                     continue
                                 elif (
-                                    ("u" in plot.fences and "d" in plot.fences and "l" in plot.fences and dir in ["tr", "br"] and plot.ps.intersection(t.fences))
-                                    or ("u" in plot.fences and "d" in plot.fences and "r" in plot.fences and dir in ["tl", "bl"] and plot.ps.intersection(t.fences))
-                                    or ("l" in plot.fences and "r" in plot.fences and "u" in plot.fences and dir in ["br", "bl"] and plot.ps.intersection(t.fences))
-                                    or ("l" in plot.fences and "r" in plot.fences and "d" in plot.fences and dir in ["tr", "tl"] and plot.ps.intersection(t.fences))
+                                    ("u" in plot.fences and "d" in plot.fences and "l" in plot.fences and dir in ["tr", "br"] and diagonal_match)
+                                    or ("u" in plot.fences and "d" in plot.fences and "r" in plot.fences and dir in ["tl", "bl"] and diagonal_match)
+                                    or ("l" in plot.fences and "r" in plot.fences and "u" in plot.fences and dir in ["br", "bl"] and diagonal_match)
+                                    or ("l" in plot.fences and "r" in plot.fences and "d" in plot.fences and dir in ["tr", "tl"] and diagonal_match)
                                 ):
                                     plot.weight += 1
-                                bs.add((dx, dy, plot.x, plot.y))
+                                visited_diagonal_matches.add((dx, dy, plot.x, plot.y))
 
                 a += plot.weight
             r += a * len(visited)
