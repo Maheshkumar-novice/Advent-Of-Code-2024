@@ -1,5 +1,3 @@
-# PART 2 IS NOT WORKING FOR THE INPUT SO KEEPING AS IT IS AND WILL COME BACK IN FUTURE TO FIX THIS!!
-
 from collections.abc import Generator
 from typing import Any
 
@@ -32,9 +30,6 @@ with open("input.txt") as f:
             if _in_bound(new_x, new_y):
                 yield new_x, new_y
 
-    def _find_area(visited):
-        return len(visited)
-
     garden_plot_area = [[0 for _ in range(len(garden))] for _ in range(len(garden[0]))]
     for i in range(len(garden)):
         for j in range(len(garden)):
@@ -63,7 +58,7 @@ with open("input.txt") as f:
                     if garden[new_x][new_y] == garden[x][y] and (new_x, new_y) not in visited:
                         q.add((new_x, new_y))
 
-            a = _find_area(visited)
+            a = len(visited)
             r += sum(garden_plot_area[kk][ll] for kk, ll in visited) * a
             for x, y in visited:
                 global_visited.add((x, y))
