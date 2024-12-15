@@ -15,10 +15,8 @@ class Box:  # noqa: D101
 
 with open("input.txt") as f:
     map_, directions = f.read().split("\n\n")
-    map_ = map_.replace("#", "##")
-    map_ = map_.replace("O", "[]")
-    map_ = map_.replace(".", "..")
-    map_ = map_.replace("@", "@.")
+    map_ = map_.replace("#", "##").replace("O", "[]").replace(".", "..").replace("@", "@.")
+    directions = directions.replace("\n", "")
     grid = [list(line) for line in map_.split()]
     movements = {"<": (0, -1), ">": (0, 1), "^": (-1, 0), "v": (1, 0)}
     box_map = {}
@@ -34,12 +32,8 @@ with open("input.txt") as f:
                 box_map[(i, j + 1)] = box
 
     for movement in directions:
-        if movement not in movements:
-            continue
-
         dx, dy = movements[movement]
         new_x, new_y = x + dx, y + dy
-
         symbol = grid[new_x][new_y]
 
         if symbol == ".":
@@ -100,15 +94,10 @@ with open("input.txt") as f:
                 grid[x][y] = "."
                 x, y = new_x, new_y
 
-        # naive visualisation
-        # import os
-        # print("\n".join(["".join(line) for line in grid]))
-        # os.system("clear")
-
     r = 0
     for i in range(len(grid)):
         for j in range(len(grid[0])):
             if grid[i][j] == "[":
-                box = box_map[(i, j)]
-                r += 100 * box.start[0] + box.start[1]
+                x, y = box_map[(i, j)].start
+                r += 100 * x + y
     print(r)
