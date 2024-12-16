@@ -50,6 +50,12 @@ with open("sample.txt") as f:
 
 print(monotonic() - st)
 print(path)
+
+for i in range(grid_length):
+    for j in range(grid_length):
+        if grid[i][j] == "#":
+            grid[i][j] = f"\033[34m{'#'}\033[0m"
+
 for dx, dy in path_len[min_score]:
     grid[dx][dy] = f"\033[1;92m{grid[dx][dy].strip("\033[31m").strip("\033[0m")}\033[0m"
     os.system("clear")  # noqa: S605, S607
