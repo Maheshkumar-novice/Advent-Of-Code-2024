@@ -1,7 +1,7 @@
 import os
 from collections import defaultdict, deque
 from functools import cache
-from time import monotonic
+from time import monotonic, sleep
 
 st = monotonic()
 with open("sample.txt") as f:
@@ -46,6 +46,7 @@ with open("sample.txt") as f:
                 queue.append((x, y, score + 1000, new_direction, path.copy()))
         os.system("clear")  # noqa: S605, S607
         print("\n".join(["".join(line) for line in grid]) + f"\nScore: {score + 1}")
+        sleep(0.1)
 
 print(monotonic() - st)
 print(path)
