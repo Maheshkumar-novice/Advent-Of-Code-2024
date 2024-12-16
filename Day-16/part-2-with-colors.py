@@ -29,7 +29,7 @@ with open("sample.txt") as f:
     while queue:
         x, y, score, direction, path = queue.popleft()
         path.append((x, y, direction, score))
-        grid[x][y] = f"\033[31m{direction}\033[0m"
+        grid[x][y] = f"\033[31m{'O'}\033[0m"
         if (x, y, direction) in vertice_scores and score > vertice_scores[(x, y, direction)]:
             continue
         vertice_scores[(x, y, direction)] = score
