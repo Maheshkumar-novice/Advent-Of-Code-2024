@@ -24,7 +24,7 @@ with open("input.txt") as f:
     queue = deque([(sx, sy, 0, "e", [])])
     visited = set()
     min_score = float("inf")
-    path_len = defaultdict(set)
+    score_path_map = defaultdict(set)
     while queue:
         x, y, score, direction, path = queue.popleft()
         path.append((x, y, direction, score))
@@ -36,11 +36,15 @@ with open("input.txt") as f:
             if grid[nx][ny] == "E":
                 min_score = min(score + 1, min_score)
                 for fx, fy, _, _ in path:
-                    path_len[score + 1].add((fx, fy))
+                    score_path_map[score + 1].add((fx, fy))
             elif new_direction == direction:
                 queue.append((nx, ny, score + 1, new_direction, path.copy()))
             else:
                 queue.append((x, y, score + 1000, new_direction, path.copy()))
 
-print(len(path_len[min_score]) + 1)
+print(len(score_path_map[min_score]) + 1)
 print(monotonic() - st)
+
+"""
+1.3942558750277385
+"""

@@ -40,3 +40,7 @@ with open("input.txt") as f:
 
 print(min_score)
 print(monotonic() - st)
+
+"""
+0.28190441703191027
+"""
