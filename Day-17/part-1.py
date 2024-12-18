@@ -1,11 +1,11 @@
 import re
 
 
-class ThreeBitComputer:
-    def __init__(self, A, B, C):
-        self.A = A
-        self.B = B
-        self.C = C
+class ThreeBitComputer:  # noqa: D101
+    def __init__(self, a: int, b: int, c: int) -> None:  # noqa: D107
+        self.A = a
+        self.B = b
+        self.C = c
         self.instruction_pointer = 0
         self.output_register = []
         self.opcode_operations = {
@@ -19,71 +19,70 @@ class ThreeBitComputer:
             7: self._cdv,
         }
 
-    def run(self, program):
+    def run(self, program: list[int]) -> None:  # noqa: D102
         while self.instruction_pointer < len(program) - 1:
             opcode = program[self.instruction_pointer]
             operand = program[self.instruction_pointer + 1]
             operation = self.opcode_operations[opcode]
             operation(operand)
 
-    def _adv(self, input) -> None:
-        operand = self._get_operand(input, type="combo")
+    def _adv(self, input_: int) -> None:
+        operand = self._get_operand(input_, type_="combo")
         self.A = int(self.A / (2**operand))
         self.instruction_pointer += 2
 
-    def _bxl(self, input) -> None:
-        operand = self._get_operand(input, type="literal")
+    def _bxl(self, input_: int) -> None:
+        operand = self._get_operand(input_, type_="literal")
         self.B = self.B ^ operand
         self.instruction_pointer += 2
 
-    def _bst(self, input) -> None:
-        operand = self._get_operand(input, type="combo")
+    def _bst(self, input_: int) -> None:
+        operand = self._get_operand(input_, type_="combo")
         self.B = operand % 8
         self.instruction_pointer += 2
 
-    def _jnz(self, input) -> None:
-        operand = self._get_operand(input, type="literal")
+    def _jnz(self, input_: int) -> None:
+        operand = self._get_operand(input_, type_="literal")
         if self.A == 0:
             self.instruction_pointer += 2
             return
         self.instruction_pointer = operand
 
-    def _bxc(self, input) -> None:
+    def _bxc(self, input_: int) -> None:  # noqa: ARG002
         self.B = self.B ^ self.C
         self.instruction_pointer += 2
 
-    def _out(self, input) -> None:
-        operand = self._get_operand(input, type="combo")
+    def _out(self, input_: int) -> None:
+        operand = self._get_operand(input_, type_="combo")
         self.output_register.append(operand % 8)
         self.instruction_pointer += 2
 
-    def _bdv(self, input):
-        operand = self._get_operand(input, type="combo")
+    def _bdv(self, input_: int) -> None:
+        operand = self._get_operand(input_, type_="combo")
         self.B = int(self.A / (2**operand))
         self.instruction_pointer += 2
 
-    def _cdv(self, input):
-        operand = self._get_operand(input, type="combo")
+    def _cdv(self, input_: int) -> None:
+        operand = self._get_operand(input_, type_="combo")
         self.C = int(self.A / (2**operand))
         self.instruction_pointer += 2
 
-    def _get_operand(self, input, type):
-        if type == "literal":
-            return input
+    def _get_operand(self, input_: int, type_: str) -> int:
+        if type_ == "literal":
+            return input_
 
-        if 0 <= input <= 3:
-            return input
+        if 0 <= input_ <= 3:
+            return input_
 
-        if input == 4:
+        if input_ == 4:
             return self.A
 
-        if input == 5:
+        if input_ == 5:
             return self.B
 
-        if input == 6:
+        if input_ == 6:
             return self.C
-
-        raise Exception()
+        return None
 
 
 with open("input.txt") as f:
@@ -93,4 +92,3 @@ program = list(map(int, program.split(",")))
 computer = ThreeBitComputer(A, B, C)
 computer.run(program)
 print(",".join(map(str, computer.output_register)))
-print(computer.A, computer.B, computer.C)
