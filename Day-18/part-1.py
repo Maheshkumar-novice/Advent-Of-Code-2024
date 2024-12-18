@@ -20,13 +20,13 @@ with open("input.txt") as f:
 
     queue = deque([(0, 0, 0)])
     min_score = float("inf")
-    vertice_scores = {}
+    visited = set()
     while queue:
         x, y, score = queue.popleft()
         grid[x][y] = "O"
-        if (x, y) in vertice_scores and score >= vertice_scores[(x, y)]:
+        if (x, y) in visited:
             continue
-        vertice_scores[(x, y)] = score
+        visited.add((x, y))
 
         for nx, ny in _next_directions(x, y):
             if (nx, ny) == (grid_length - 1, grid_length - 1):
