@@ -150,7 +150,6 @@ for code in codes:
     new_paths = list(filter(lambda e: e[1] == max_len, new_paths))
 
     min_ = float("inf")
-    c = 0
     for value, _ in new_paths:
         value = "A" + value  # noqa: PLW2901
         paths = []
@@ -159,7 +158,6 @@ for code in codes:
         for i in product(*paths):
             a = len("".join(i))
             min_ = min(a, min_)
-            c += 1
     result += (min_) * int(code[1:-1])
 
 print(result)
