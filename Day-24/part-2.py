@@ -1,4 +1,4 @@
-"""Manual effort using the visual representation."""
+"""Manual effort using the visual representation. I LOVED THIS PUZZLE!."""
 
 import re
 
