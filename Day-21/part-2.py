@@ -168,9 +168,9 @@ for code in codes:
 
 print(result)
 
-print(_get_shortest_path_to_keypad.cache_info())
-print(_get_shortest_path_to_arrow_keypad.cache_info())
-print(_next_keypad_directions.cache_info())
-print(_next_arrow_keypad_directions.cache_info())
-print(_get_arrow_result.cache_info())
-print(_do_solve_this.cache_info())
+# print(_get_shortest_path_to_keypad.cache_info())
+# print(_get_shortest_path_to_arrow_keypad.cache_info())
+# print(_next_keypad_directions.cache_info())
+# print(_next_arrow_keypad_directions.cache_info())
+# print(_get_arrow_result.cache_info())
+# print(_do_solve_this.cache_info())

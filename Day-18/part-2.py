@@ -44,5 +44,5 @@ with open("input.txt") as f:
 
         if min_score == float("inf"):
             print(dy, dx)
-            print(_next_directions.cache_info())
+            # print(_next_directions.cache_info())
             break

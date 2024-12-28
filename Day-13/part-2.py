@@ -21,7 +21,7 @@ with open("input.txt") as f:
 
     print(tokens)
 
-print(monotonic() - st)
+# print(monotonic() - st)
 
 """
 time: 0.00470458302879706

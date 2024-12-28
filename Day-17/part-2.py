@@ -10,3 +10,4 @@ through range and try to match.
 
 There are better solutions that uses some kind of reverse engineering to find out the answer. I'll try to do that in future whenever I can.
 """  # noqa: D404
+print("Solved mostly by staring at the screen lol!")

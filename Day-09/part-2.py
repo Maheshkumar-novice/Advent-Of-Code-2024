@@ -60,7 +60,7 @@ with open("input.txt") as f:  # noqa: PTH123
             count = 1
 
     print(sum(int(char) * idx if char != "." else 0 for idx, char in enumerate(expanded_disk_map)))  # noqa: T201
-print(monotonic() - s)  # noqa: T201
+# print(monotonic() - s)  # noqa: T201
 
 """
 5.9477488749835175

@@ -16,4 +16,4 @@ with open("input.txt") as f:
                 c += _solve(p[i + 1 :])
         return c
 
-    print(sum(_solve(pattern) for pattern in patterns), _solve.cache_info())
+    print(sum(_solve(pattern) for pattern in patterns))

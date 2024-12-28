@@ -12,4 +12,4 @@ with open("input.txt") as f:
 
         return any(p[0 : i + 1] in combos and _solve(p[i + 1 :]) for i in range(len(p)))
 
-    print(sum(_solve(pattern) for pattern in patterns), _solve.cache_info())
+    print(sum(_solve(pattern) for pattern in patterns))

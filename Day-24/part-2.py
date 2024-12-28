@@ -48,9 +48,9 @@ while True:
 x_sum = int("".join(str(e[1]) for e in sorted([(int(key[1:]), wire_inputs[key]) for key in wire_inputs if key[0] == "x"], key=lambda e: e[0], reverse=True)), 2)
 y_sum = int("".join(str(e[1]) for e in sorted([(int(key[1:]), wire_inputs[key]) for key in wire_inputs if key[0] == "y"], key=lambda e: e[0], reverse=True)), 2)
 z_sum = int("".join(str(e[1]) for e in sorted([(int(key[1:]), wire_inputs[key]) for key in wire_inputs if key[0] == "z"], key=lambda e: e[0], reverse=True)), 2)
-print(x_sum)
-print(y_sum)
-print(z_sum)
+# print(x_sum)
+# print(y_sum)
+# print(z_sum)
 print("Addition Successful!" if x_sum + y_sum == z_sum else ":(")
 # Swapped Wires: rpp,z39,z23,kdf,fdv,dbp,z15,ckj
 # I've used graphviz to visualize this ripple carry adder (I guess). During the investigation I found out the swapped

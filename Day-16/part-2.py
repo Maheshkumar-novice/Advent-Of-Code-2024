@@ -43,7 +43,7 @@ with open("input.txt") as f:
                 queue.append((x, y, score + 1000, new_direction, path.copy()))
 
 print(len(score_path_map[min_score]) + 1)
-print(monotonic() - st)
+# print(monotonic() - st)
 
 """
 1.3942558750277385

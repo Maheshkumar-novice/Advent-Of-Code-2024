@@ -28,7 +28,7 @@ def _approach_1() -> None:
                             if distance in d and distance2 in d:
                                 grid[i][j] = "#"
                                 result += 1
-        print(result)  # noqa: T201
+        # print(result)  # noqa: T201
 
 
 def _approach_2() -> None:
@@ -63,7 +63,7 @@ def _approach_2() -> None:
                 grid[ax][ay] = "#"
                 result += 1
 
-    print(result)  # noqa: T201
+    # print(result)  # noqa: T201
 
 
 def _approach_3() -> None:
@@ -96,16 +96,16 @@ def _approach_3() -> None:
 
 s = monotonic()
 _approach_1()
-print(monotonic() - s)  # noqa: T201
+# print(monotonic() - s)  # noqa: T201
 
 s = monotonic()
 _approach_2()
-print(monotonic() - s)  # noqa: T201
+# print(monotonic() - s)  # noqa: T201
 
 
 s = monotonic()
 _approach_3()
-print(monotonic() - s)  # noqa: T201
+# print(monotonic() - s)  # noqa: T201
 
 
 """

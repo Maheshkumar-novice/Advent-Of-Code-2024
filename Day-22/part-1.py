@@ -16,4 +16,4 @@ for secret in secrets:
     for _ in range(2000):
         secret = _next_secret(secret)  # noqa: PLW2901
     result += secret
-print(result, _next_secret.cache_info())
+print(result)

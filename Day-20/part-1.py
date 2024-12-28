@@ -64,5 +64,5 @@ with open("input.txt") as f:
         if saved >= 100:
             cheat_count += 1
 
-    print(min_score)
+    # print(min_score)
     print(cheat_count)

@@ -50,9 +50,9 @@ if __name__ == "__main__":
             futures = [e.submit(process, line) for line in f]
             result = [k.result() for k in futures]
 
-        print(sum(result))  # noqa: T201
+        # print(sum(result))  # noqa: T201
     e = time.monotonic()
-    print(" ->", e - s)  # noqa: T201
+    # print(" ->", e - s)  # noqa: T201
 
     s = time.monotonic()
     with open("input.txt") as f, ProcessPoolExecutor(max_workers=8) as executor:  # noqa: PTH123
@@ -65,7 +65,7 @@ if __name__ == "__main__":
         result = [k.result() for k in futures]
         print(sum(result))  # noqa: T201
     e = time.monotonic()
-    print(" ->", e - s)  # noqa: T201
+    # print(" ->", e - s)  # noqa: T201
 
 """
 401477450831495

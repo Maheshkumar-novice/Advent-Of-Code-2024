@@ -39,7 +39,7 @@ with open("input.txt") as f:
                 queue.append((x, y, score + 1000, new_direction))
 
 print(min_score)
-print(monotonic() - st)
+# print(monotonic() - st)
 
 """
 0.28190441703191027

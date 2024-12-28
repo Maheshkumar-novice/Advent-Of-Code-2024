@@ -37,10 +37,10 @@ if __name__ == "__main__":
                 if total == value:
                     result += total
                     break
-        print(result)  # noqa: T201
+        # print(result)  # noqa: T201
 
     e = time.monotonic()
-    print(" ->", e - s)  # noqa: T201
+    # print(" ->", e - s)  # noqa: T201
 
     s = time.monotonic()
     with open("input.txt") as f:  # noqa: PTH123
@@ -52,7 +52,7 @@ if __name__ == "__main__":
             r += recurse(operands[0], value, operands[1:])
         print(r)  # noqa: T201
     e = time.monotonic()
-    print(" -> ", e - s)  # noqa: T201
+    # print(" -> ", e - s)  # noqa: T201
 
 """
 2314935962622

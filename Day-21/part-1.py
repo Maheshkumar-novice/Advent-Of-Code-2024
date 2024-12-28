@@ -161,8 +161,9 @@ for code in codes:
     result += (min_) * int(code[1:-1])
 
 print(result)
-print(_get_shortest_path_to_keypad.cache_info())
-print(_get_shortest_path_to_arrow_keypad.cache_info())
-print(_next_keypad_directions.cache_info())
-print(_next_arrow_keypad_directions.cache_info())
-print(_get_arrow_result.cache_info())
+
+# print(_get_shortest_path_to_keypad.cache_info())
+# print(_get_shortest_path_to_arrow_keypad.cache_info())
+# print(_next_keypad_directions.cache_info())
+# print(_next_arrow_keypad_directions.cache_info())
+# print(_get_arrow_result.cache_info())

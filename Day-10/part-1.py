@@ -35,7 +35,7 @@ with open("input.txt") as f:  # noqa: PTH123
 
         result += len(nines)
 
-    print(result, "\n", monotonic() - s)  # noqa: T201
+    print(result)  # noqa: T201
 
 """
 0.007643263001227751

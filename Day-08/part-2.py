@@ -28,7 +28,7 @@ def _approach_1() -> None:
                         if abs(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) == 0:
                             grid[i][j] = "#"
                             result += 1
-    print(result)  # noqa: T201
+    # print(result)  # noqa: T201
 
 
 def _approach_2() -> None:  # noqa: C901, PLR0912
@@ -69,7 +69,7 @@ def _approach_2() -> None:  # noqa: C901, PLR0912
                         result += 1
                 else:
                     break
-    print(result)  # noqa: T201
+    # print(result)  # noqa: T201
 
 
 def _approach_3() -> None:
@@ -109,16 +109,16 @@ def _approach_3() -> None:
 
 s = monotonic()
 _approach_1()
-print(monotonic() - s)  # noqa: T201
+# print(monotonic() - s)  # noqa: T201
 
 s = monotonic()
 _approach_2()
-print(monotonic() - s)  # noqa: T201
+# print(monotonic() - s)  # noqa: T201
 
 
 s = monotonic()
 _approach_3()
-print(monotonic() - s)  # noqa: T201
+# print(monotonic() - s)  # noqa: T201
 
 
 """

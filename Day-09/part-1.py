@@ -57,7 +57,7 @@ with open("input.txt") as f:  # noqa: PTH123
             break
 
     print(sum(int(char) * idx for idx, char in enumerate(expanded_disk_map) if char != "."))  # noqa: T201
-print(monotonic() - s)  # noqa: T201
+# print(monotonic() - s)  # noqa: T201
 
 """
 0.039413958991644904

@@ -15,7 +15,7 @@ with open("input.txt") as f:  # noqa: PTH123
 
     for i in range(25):
         stones = [i for stone in stones for i in _apply_rule(stone)]
-    print(f"{len(stones):,}\n{monotonic() - s}")  # noqa: T201
+    print(f"{len(stones):,}")  # noqa: T201
 
 """
 0.11531575000844896
